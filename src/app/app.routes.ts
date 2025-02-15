@@ -37,5 +37,10 @@ export const routes: Routes = [
     path: 'product-movement',
     component: StockMovementComponent,
   },
+  {
+    path: 'quotation',
+    component: QuotationComponent,
+  },
+  
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];

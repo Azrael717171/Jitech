@@ -12,7 +12,7 @@ import { InventoryService } from '../../services/inventory.service';
 })
 export class QuotationComponent implements OnInit {
   showModal = false;
-  inventory: any[] = [];
+  products: any[] = [];
   selectedProducts: any[] = [];
   isLoading = false;
   searchTerm: string = ''; // search term for filtering inventory
@@ -23,16 +23,16 @@ export class QuotationComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.loadInventory();
+    this.loadProducts();
   }
 
   // Returns inventory filtered by search term
   get filteredInventory() {
     if (!this.searchTerm) {
-      return this.inventory;
+      return this.products;
     }
     const term = this.searchTerm.toLowerCase();
-    return this.inventory.filter(product =>
+    return this.products.filter(product =>
       product.productName.toLowerCase().includes(term) ||
       (product.sku && product.sku.toLowerCase().includes(term)) ||
       (product.category && product.category.toLowerCase().includes(term))
@@ -49,21 +49,18 @@ export class QuotationComponent implements OnInit {
     this.searchTerm = '';
   }
 
-  loadInventory() {
-    this.isLoading = true;
-    this.inventoryService.getInventory(1, 1000, 'updatedAt', 'desc').subscribe(
+  loadProducts() {
+    this.productService.getProducts().subscribe(
       (response) => {
-        this.isLoading = false;
-        // Adjust based on your API response
-        this.inventory = response.data || response;
-        console.log('✅ Loaded Inventory:', this.inventory);
+        // Only include products with stockLevel greater than 0.
+        this.products = response.data.filter((product: { stockLevel: number; }) => product.stockLevel > 0);
       },
       (error) => {
-        this.isLoading = false;
-        console.error('❌ Error loading inventory:', error);
+        console.error('❌ Error loading products:', error);
       }
     );
   }
+
 
   // Toggle individual product selection.
   // Also, the product.desiredQty should already be entered in the modal.
