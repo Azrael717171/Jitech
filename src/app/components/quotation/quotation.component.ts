@@ -125,23 +125,29 @@ export class QuotationComponent implements OnInit {
     }, 0);
   }
 
-  get taxableAmount(): number {
-    // Example logic: maybe the taxable amount is subTotal minus any exempt portion
-    // For now, let's assume it's just subTotal
-    return this.subTotal;
-  }
 
   get vatAmount(): number {
     // 12% of taxableAmount
-    return this.taxableAmount * 0.12;
+    const total = this.subTotal - this.taxableAmount;
+    return total; 
   }
+  
+
+  get taxableAmount(): number {
+    // Example logic: maybe the taxable amount is subTotal minus any exempt portion
+    // For now, let's assume it's just subTotal
+      return this.subTotal / 1.12;
+  }
+
 
   get grandTotal(): number {
     // subTotal + VAT (if your pricing is not already VAT inclusive)
     // or if your subTotal is inclusive, you might not add it again
     // This depends on your own logic.
 
-    const total = this.subTotal + this.vatAmount;
-    return total; 
+    return this.subTotal;
+
   }
+
+
 }

@@ -31,14 +31,16 @@
               <td class="px-6 py-4">{{ product.productName }} - {{ product.description }}</td>
               <td class="px-6 py-4">
                 <!-- Input to update quantity in the quotation table -->
-                <input type="number" [(ngModel)]="product.qty" class="w-16" min="1" />
+                <input type="number" [(ngModel)]="product.qty" class="w-16" min="1" [max]="product.stockLevel" 
+                (change)="validateDesiredQty(product)"  readonly/>
+                
               </td>
-              <td class="px-6 py-4">{{ product.price | currency }}</td>
+              <td class="px-6 py-4">{{ product.price | currency:'PHP':'symbol' }}</td>
               <td class="px-6 py-4">
                 <input type="number" [(ngModel)]="product.discount" class="w-16" />
               </td>
               <td class="px-6 py-4">
-                {{ (product.price * product.qty - product.discount) | currency }}
+                {{ (product.price * product.qty - product.discount) | currency:'PHP':'symbol' }}
               </td>
             </tr>
           </tbody>
@@ -62,25 +64,20 @@
             <!-- Right side: Sub Total + (Tax Inclusive) -->
             <div class="text-right">
               <p>
-                sub total: 
-                <!-- Replace `taxableAmount` with your own calculated property -->
-                {{ subTotal | currency:'PHP':'symbol' }}
+                Sub total: 
+                <span class="ms-10 me-5"> {{ subTotal | currency:'PHP':'symbol' }}</span>
               </p>
-            </div>
-          </div>
-
-          <!-- Row 2: Right-aligned Taxable details -->
-          <div class="flex justify-end me-28">
-            <div class="text-right space-y-1">
+  
               <p>
                 Total Taxable Amount: 
                 <!-- Replace `taxableAmount` with your own calculated property -->
-                {{ taxableAmount | currency:'PHP':'symbol' }}
+                <span class="ms-10 me-5"> {{ taxableAmount | currency:'PHP':'symbol' }}</span>
+
               </p>
               <p>
                 VAT (12%): 
                 <!-- Replace `vatAmount` with your own calculated property -->
-                {{ vatAmount | currency:'PHP':'symbol' }}
+                <span class="ms-10 me-5"> {{ vatAmount | currency:'PHP':'symbol' }}</span>
               </p>
             </div>
           </div>
@@ -182,7 +179,7 @@
             </tr>
           </tbody>
         </table>
-      </div>
+      </div>q
       
       <button type="button" (click)="addSelectedProducts()" class="w-full text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-lg px-6 py-3">
         Add Selected Products
