@@ -45,7 +45,7 @@ export class AppComponent {
     {
       name: 'Quotations',
       icon: './QuotationsWhite.png',
-      routes: '/quotations',
+      routes: '/quotation',
     },
   ];
 

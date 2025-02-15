@@ -1,0 +1,120 @@
+<!-- Modal Toggle Button -->
+<button 
+  (click)="openModal()" 
+  [disabled]="isLoading"
+  class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" 
+  type="button">
+  + Select
+</button>
+
+<!-- Display Selected Products in Table -->
+<div class="flex flex-col mt-4">
+  <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+      <div class="overflow-hidden">
+        <table class="min-w-full text-left text-sm font-light text-surface dark:text-dark">
+          <thead class="border-b border-neutral-200 bg-gray-700 font-medium dark:border-white/10 dark:bg-body-dark text-white">
+            <tr>
+              <th scope="col" class="px-6 py-4">#</th>
+              <th scope="col" class="px-6 py-4">Item & Description</th>
+              <th scope="col" class="px-6 py-4">Qty</th>
+              <th scope="col" class="px-6 py-4">Rate</th>
+              <th scope="col" class="px-6 py-4">Discount</th>
+              <th scope="col" class="px-6 py-4">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of selectedProducts; let i = index">
+              <td class="px-6 py-4">{{ i + 1 }}</td>
+              <td class="px-6 py-4">{{ product.productName }} - {{ product.description }}</td>
+              <td class="px-6 py-4">
+                <!-- Input to update quantity in the quotation table -->
+                <input type="number" [(ngModel)]="product.qty" class="w-16" min="1" />
+              </td>
+              <td class="px-6 py-4">{{ product.price | currency }}</td>
+              <td class="px-6 py-4">
+                <input type="number" [(ngModel)]="product.discount" class="w-16" />
+              </td>
+              <td class="px-6 py-4">
+                {{ (product.price * product.qty - product.discount) | currency }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <button (click)="submitQuotation()" 
+                class="w-full text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-lg px-6 py-3 mt-4">
+          Submit Quotation
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main Modal -->
+<div *ngIf="showModal" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-500 bg-opacity-50">
+  <div class="relative p-6 w-full max-w-4xl bg-white rounded-lg shadow-lg">
+    <!-- Modal Header -->
+    <div class="flex items-center justify-between pb-4 border-b border-gray-200">
+      <h3 class="text-2xl font-semibold text-gray-900">Select A Product</h3>
+      <button (click)="closeModal()" class="text-gray-600 hover:bg-gray-200 hover:text-gray-900 rounded-lg p-2">
+        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Search Input -->
+    <div class="pb-4">
+      <input 
+        type="text" 
+        [(ngModel)]="searchTerm" 
+        placeholder="Search by product, SKU, or category..."
+        class="w-full border border-gray-300 rounded-lg px-3 py-2"
+      />
+    </div>
+
+    <!-- Modal Body -->
+    <form class="pt-4 space-y-6">
+      <div class="overflow-x-auto">
+        <table class="w-full border border-gray-300">
+          <thead class="bg-gray-200 text-gray-700">
+            <tr>
+              <th class="border px-6 py-3 text-left text-lg">
+                <input type="checkbox" (change)="toggleAllSelection($event)">
+              </th>
+              <th class="border px-6 py-3 text-left text-lg">Product</th>
+              <th class="border px-6 py-3 text-left text-lg">SKU</th>
+              <th class="border px-6 py-3 text-left text-lg">Category</th>
+              <th class="border px-6 py-3 text-left text-lg">Price</th>
+              <th class="border px-6 py-3 text-left text-lg">Instock</th>
+              <!-- New Qty column in modal -->
+              <th class="border px-6 py-3 text-left text-lg">Qty</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of filteredInventory" class="odd:bg-white even:bg-gray-100 text-gray-900 hover:bg-gray-200">
+              <td class="border px-6 py-3 text-lg">
+                <input type="checkbox" 
+                       [checked]="selectedProducts.includes(product)"
+                       (change)="toggleSelection(product, $event)">
+              </td>
+              <td class="border px-6 py-3 text-lg">{{ product.productName }}</td>
+              <td class="border px-6 py-3 text-lg">{{ product.sku }}</td>
+              <td class="border px-6 py-3 text-lg">{{ product.category }}</td>
+              <td class="border px-6 py-3 text-lg">{{ product.price | currency }}</td>
+              <td class="border px-6 py-3 text-lg">{{ product.qty }}</td>
+              <td class="border px-6 py-3 text-lg">
+                <!-- Input for desired quantity in the modal -->
+                <input type="number" [(ngModel)]="product.desiredQty" name="qty-{{product.sku}}" class="w-16" min="1" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <button type="button" (click)="addSelectedProducts()" class="w-full text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-lg px-6 py-3">
+        Add Selected Products
+      </button>
+    </form>
+  </div>
+</div>
