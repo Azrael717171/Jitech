@@ -61,6 +61,16 @@ export class QuotationComponent implements OnInit {
     );
   }
 
+  // Validate desired quantity to ensure it is between 1 and product.stockLevel
+  validateDesiredQty(product: any) {
+    if (!product.desiredQty || product.desiredQty < 1) {
+      product.desiredQty = 1;
+    }
+    if (product.stockLevel && product.desiredQty > product.stockLevel) {
+      product.desiredQty = product.stockLevel;
+    }
+  }
+
 
   // Toggle individual product selection.
   // Also, the product.desiredQty should already be entered in the modal.
@@ -104,5 +114,34 @@ export class QuotationComponent implements OnInit {
   // Final submission of the quotation
   submitQuotation() {
     console.log('Quotation Submitted:', this.selectedProducts);
+  }
+
+   // Example computed properties
+   get subTotal(): number {
+    // Sum of (price * qty - discount) for each product
+    return this.selectedProducts.reduce((sum, product) => {
+      const itemTotal = (product.price * product.qty) - (product.discount || 0);
+      return sum + itemTotal;
+    }, 0);
+  }
+
+  get taxableAmount(): number {
+    // Example logic: maybe the taxable amount is subTotal minus any exempt portion
+    // For now, let's assume it's just subTotal
+    return this.subTotal;
+  }
+
+  get vatAmount(): number {
+    // 12% of taxableAmount
+    return this.taxableAmount * 0.12;
+  }
+
+  get grandTotal(): number {
+    // subTotal + VAT (if your pricing is not already VAT inclusive)
+    // or if your subTotal is inclusive, you might not add it again
+    // This depends on your own logic.
+
+    const total = this.subTotal + this.vatAmount;
+    return total; 
   }
 }

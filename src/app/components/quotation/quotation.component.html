@@ -12,6 +12,8 @@
   <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
     <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
       <div class="overflow-hidden">
+        
+        <!-- Quotation Table -->
         <table class="min-w-full text-left text-sm font-light text-surface dark:text-dark">
           <thead class="border-b border-neutral-200 bg-gray-700 font-medium dark:border-white/10 dark:bg-body-dark text-white">
             <tr>
@@ -41,14 +43,76 @@
             </tr>
           </tbody>
         </table>
-        <button (click)="submitQuotation()" 
+
+        <!-- Divider -->
+        <div class="my-5">
+          <hr class="my-2 border-gray-300" />
+        </div>
+
+        <!-- Summary Section -->
+        <div class="space-y-2">
+
+          <!-- Row 1: Items in total (left) and Sub Total (right) -->
+          <div class="flex justify-between items-start">
+            <!-- Left side: Items in Total -->
+            <p class="font-semibold">
+              Items in Total: {{ selectedProducts.length }}
+            </p>
+            
+            <!-- Right side: Sub Total + (Tax Inclusive) -->
+            <div class="text-right">
+              <p>
+                sub total: 
+                <!-- Replace `taxableAmount` with your own calculated property -->
+                {{ subTotal | currency:'PHP':'symbol' }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Row 2: Right-aligned Taxable details -->
+          <div class="flex justify-end me-28">
+            <div class="text-right space-y-1">
+              <p>
+                Total Taxable Amount: 
+                <!-- Replace `taxableAmount` with your own calculated property -->
+                {{ taxableAmount | currency:'PHP':'symbol' }}
+              </p>
+              <p>
+                VAT (12%): 
+                <!-- Replace `vatAmount` with your own calculated property -->
+                {{ vatAmount | currency:'PHP':'symbol' }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Optional horizontal divider to separate details from total -->
+          <hr class="my-2 border-gray-300" />
+
+          <!-- Row 3: Highlighted Total Amount on the right -->
+          <div class="flex justify-end">
+            <div class="bg-gray-100 px-4 py-2">
+              <p class="font-bold">
+                Total Amount: 
+                <!-- Replace `grandTotal` with your own calculated property -->
+                <span class="text-red-600">
+                  {{ grandTotal | currency:'PHP':'symbol' }}
+                </span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <!-- <button (click)="submitQuotation()" 
                 class="w-full text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-lg px-6 py-3 mt-4">
           Submit Quotation
-        </button>
+        </button> -->
+
       </div>
     </div>
   </div>
 </div>
+
 
 <!-- Main Modal -->
 <div *ngIf="showModal" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-500 bg-opacity-50">
@@ -105,8 +169,16 @@
               <td class="border px-6 py-3 text-lg">{{  product.stockLevel }}</td>
               <td class="border px-6 py-3 text-lg">
                 <!-- Input for desired quantity in the modal -->
-                <input type="number" [(ngModel)]="product.desiredQty" name="qty-{{product.sku}}" class="w-16" min="1" />
+                <input 
+                  type="number" 
+                  [(ngModel)]="product.desiredQty" 
+                  name="qty-{{product.sku}}" 
+                  class="w-16" 
+                  min="1" 
+                  [max]="product.stockLevel" 
+                  (change)="validateDesiredQty(product)" />
               </td>
+              
             </tr>
           </tbody>
         </table>
