@@ -2,11 +2,10 @@ import { Routes } from '@angular/router';
 import { LandingComponent } from './components/landing/landing.component';
 import { LoginComponent } from './components/login/login.component';
 import { InventoryDashboardComponent } from './components/inventory-dashboard/inventory-dashboard.component';
-import { InventoryListComponent } from './components/inventory-list/inventory-list.component';
 import { StockMovementComponent } from './components/stock-movement/stock-movement.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { ProductFormComponent } from './components/product-form/product-form.component';
-import { QuotationComponent } from './components/quotation/quotation.component';
+import { SaleComponent } from './components/sale/sale.component';
 
 export const routes: Routes = [
   {
@@ -37,11 +36,9 @@ export const routes: Routes = [
     path: 'product-movement',
     component: StockMovementComponent,
   },
-
   {
-    path: 'quotation',
-    component: QuotationComponent,
+    path: 'sale',
+    component: SaleComponent,
   },
-
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
