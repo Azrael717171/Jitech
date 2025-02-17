@@ -6,6 +6,7 @@ import { InventoryListComponent } from './components/inventory-list/inventory-li
 import { StockMovementComponent } from './components/stock-movement/stock-movement.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { ProductFormComponent } from './components/product-form/product-form.component';
+import { QuotationComponent } from './components/quotation/quotation.component';
 
 export const routes: Routes = [
   {
@@ -35,6 +36,11 @@ export const routes: Routes = [
   {
     path: 'product-movement',
     component: StockMovementComponent,
+  },
+
+  {
+    path: 'quotation',
+    component: QuotationComponent,
   },
 
   { path: '**', redirectTo: '', pathMatch: 'full' },

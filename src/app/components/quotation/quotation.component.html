@@ -1,0 +1,237 @@
+<!-- Open Modal Button -->
+<button
+  (click)="open()"
+  class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition"
+>
++
+</button>
+
+
+<div class="border rounded-lg p-6 w-[700px] mx-auto shadow-md">
+  <div class="flex justify-between items-center border-b pb-4 mb-4">
+    <!-- Logo and Company Name -->
+    <div class="flex flex-col items-center mb-6">
+      <img src="./JitechBlue.png" alt="Company Logo" class="h-14 mb-2" />
+      <!-- Ensure the logo path is correct -->
+      <p class="text-gray-600 text-sm">
+        Competitive Card Solutions Phils. Inc.
+      </p>
+    </div>
+
+    <!-- Official Quotation -->
+    <div class="text-right">
+      <h2 class="text-xl font-bold text-gray-900">Official Quotation</h2>
+      <p class="text-sm text-gray-500">
+        # {{ formData.quotationNumber || "Generating..." }}
+      </p>
+    </div>
+  </div>
+  <div class="grid grid-cols-2 gap-50">
+    <div class="space-y-1 ">
+      <p class="font-bold"><strong></strong> {{ formData.companyName }}</p>
+      <p><strong></strong> {{ formData.address }}</p>
+      <p><strong></strong> {{ formData.contactNo }}</p>
+      <p><strong></strong>TIN- {{ formData.tin }}</p>
+      <p><strong></strong> {{ formData.clientName }}</p>
+    </div>
+    <div class="text-gray-500 text-sm space-y-2">
+      <p>
+        Quotation Date :
+        <span class="ml-2 text-black font-semibold">{{
+          formatDate(formData.quotationDate)
+        }}</span>
+      </p>
+      <p>
+        Expiry Date :
+        <span class="ml-2 text-black font-semibold">{{
+          formatDate(formData.expiryDate)
+        }}</span>
+      </p>
+      <p>
+        Reference :
+        <span class="ml-2 text-black font-semibold">{{
+          formData.reference
+        }}</span>
+      </p>
+      <p>
+        Sales Person :
+        <span class="ml-2 text-black font-semibold">{{
+          formData.salesPerson
+        }}</span>
+      </p>
+      <p>
+        Payment Term :
+        <span class="ml-2 text-black font-semibold">{{
+          formData.paymentTerm
+        }}</span>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div
+  *ngIf="showModal"
+  class="fixed inset-0 flex items-center justify-center bg-opacity-50 transition-opacity duration-300"
+  (click)="close()"
+>
+  <div
+    class="bg-white p-6 rounded-xl shadow-2xl w-full max-w-2xl transform transition-all duration-300 scale-95"
+    (click)="$event.stopPropagation()"
+    role="dialog"
+    aria-hidden="true"
+  >
+    <div class="flex justify-between items-center border-b pb-3">
+      <h2 class="text-xl font-bold text-gray-800">Quotation Details</h2>
+      <button
+        (click)="close()"
+        class="text-gray-500 hover:text-gray-700 transition"
+      >
+        ✕
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+      <div class="space-y-4">
+        <div>
+          <label
+            for="companyName"
+            class="block text-sm font-medium text-gray-700"
+            >Company Name</label
+          >
+          <input
+            id="companyName"
+            type="text"
+            [(ngModel)]="formData.companyName"
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        <div>
+          <label for="address" class="block text-sm font-medium text-gray-700"
+            >Address</label
+          >
+          <input
+            id="address"
+            type="text"
+            [(ngModel)]="formData.address"
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        <div>
+          <label for="contactNo" class="block text-sm font-medium text-gray-700"
+            >Contact No.</label
+          >
+          <input
+            id="contactNo"
+            type="text"
+            [(ngModel)]="formData.contactNo"
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        <div>
+          <label
+            for="clientName"
+            class="block text-sm font-medium text-gray-700"
+            >Client Name</label
+          >
+          <input
+            id="clientName"
+            type="text"
+            [(ngModel)]="formData.clientName"
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div>
+          <label
+            for="quotationDate"
+            class="block text-sm font-medium text-gray-700"
+            >Quotation Date</label
+          >
+          <input
+            id="quotationDate"
+            type="date"
+            [(ngModel)]="formData.quotationDate"
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        <div>
+          <label
+            for="expiryDate"
+            class="block text-sm font-medium text-gray-700"
+            >Expiry Date</label
+          >
+          <input
+            id="expiryDate"
+            type="date"
+            [(ngModel)]="formData.expiryDate"
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        <div>
+          <label for="reference" class="block text-sm font-medium text-gray-700"
+            >Reference</label
+          >
+          <input
+            id="reference"
+            type="text"
+            [(ngModel)]="formData.reference"
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        <div>
+          <label
+            for="salesPerson"
+            class="block text-sm font-medium text-gray-700"
+            >Sales Person</label
+          >
+          <input
+            id="salesPerson"
+            type="text"
+            [(ngModel)]="formData.salesPerson"
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="mt-4">
+      <label for="tin" class="block text-sm font-medium text-gray-700"
+        >TIN</label
+      >
+      <input
+        id="tin"
+        type="text"
+        [(ngModel)]="formData.tin"
+        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
+    <div class="mt-4">
+      <label for="paymentTerm" class="block text-sm font-medium text-gray-700"
+        >Payment Term</label
+      >
+      <input
+        id="paymentTerm"
+        type="text"
+        [(ngModel)]="formData.paymentTerm"
+        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
+
+
+    <div class="mt-6 flex justify-end space-x-2">
+      <button
+        (click)="close()"
+        class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition"
+      >
+        Cancel
+      </button>
+      <button
+        (click)="submit()"
+        class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+      >
+        Save
+      </button>
+    </div>
+  </div>
+</div>
