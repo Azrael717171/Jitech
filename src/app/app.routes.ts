@@ -6,6 +6,7 @@ import { StockMovementComponent } from './components/stock-movement/stock-moveme
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { ProductFormComponent } from './components/product-form/product-form.component';
 import { SaleComponent } from './components/sale/sale.component';
+import { QuotationComponent } from './components/quotation/quotation.component';
 
 export const routes: Routes = [
   {
@@ -39,6 +40,10 @@ export const routes: Routes = [
   {
     path: 'sale',
     component: SaleComponent,
+  },
+  {
+    path: 'quotation',
+    component: QuotationComponent,
   },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
