@@ -3,15 +3,19 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Quotation } from '../models/quotation';
 import { map } from 'rxjs/operators';
+import { InventoryService } from './inventory.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuotationService {
   private apiUrl = 'http://localhost:5000/api/quotations'; // Update with your backend URL
-
+  private apiUrl_Inventory = 'http://localhost:5000/api/inventory';
   constructor(private http: HttpClient) {}
 
+  getInventory(){
+    return this.http.get(this.apiUrl_Inventory);
+  }
 
   // Fetch only the latest quotation
   getLatestQuotation(): Observable<Quotation> {
